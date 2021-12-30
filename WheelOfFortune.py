@@ -1,4 +1,5 @@
 import random
+from pathlib import Path
 
 rounds = 2
 numberOfPlayers = 3
@@ -11,14 +12,16 @@ global consonants, vowels
 consonants = ('B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Y', 'Z')
 vowels = ('A', 'E', 'I', 'O', 'U')
 #Path for words.txt file
-userDefinedPath = "C:\\Users\\Qwerty\\Desktop\\words.csv"
+base_path = Path(__file__).parent
+file_path = (base_path / "../WheelOfFortune/words.csv").resolve()
 
-def generateWord(userDefinedPath):
-    f = open(userDefinedPath)
-    words = f.read()
-    words = words.split("\n")
-    word = random.choice(words)
-    word = word.upper()
+def generateWord(file_path):
+    with file_path.open() as f:
+        f = open(file_path)
+        words = f.read()
+        words = words.split("\n")
+        word = random.choice(words)
+        word = word.upper()
     return word
 
 def attemptSolve(word):
@@ -84,7 +87,7 @@ def guessVowel(word, builtWord):
 for r  in range(rounds):
     # Initialize round
     print("\nRound " + str(r + 1))
-    word = generateWord(userDefinedPath)
+    word = generateWord(file_path)
     builtWord = "_" * len(word)
     print("\nFor ease of debugging, the word is " + str(word))
     while wordSolved == False:
